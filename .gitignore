@@ -1,0 +1,5 @@
+FBI_PROJECT_FINAL_COHORT.csv    # MIMIC data — cannot be shared
+*.csv
+neuro_decline_model.pkl         # optional — large file
+.ipynb_checkpoints/
+__pycache__/
