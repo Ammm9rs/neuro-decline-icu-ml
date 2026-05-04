@@ -1,4 +1,4 @@
-# neuro-decline-icu-ml
+# Neuro-decline-icu-ml
 Early detection of neurological decline in ICU patients  using MIMIC-IV clinical data and XGBoost — FBI Project, IIIT Delhi 2026
 
 # Neurological Decline Detection in ICU Patients
