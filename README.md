@@ -45,3 +45,6 @@ This project is a direct response to that clinical problem.
 ---
 
 ## Project Structure
+---
+
+## Project Structure
