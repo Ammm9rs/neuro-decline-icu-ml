@@ -44,27 +44,91 @@ This project is a direct response to that clinical problem.
 
 ---
 
-## Project Structure
-neuro-decline-icu-ml/
-│
-├── sql/
-│   ├── label_construction.sql      # ICD + proxy + control cohort
-│   └── feature_extraction.sql      # 15 clinical features via BigQuery
-│
-├── notebooks/
-│   └── FBI_final_model.ipynb       # Full pipeline: clean → train → evaluate
-│
-├── outputs/
-│   ├── plot0_leakage_comparison.png
-│   ├── plot1_feature_importance.png
-│   ├── plot2_pr_curve.png
-│   ├── plot3_confusion_matrix.png
-│   ├── cohort_visualization.png
-│   ├── threshold_selection.png
-│   ├── clinical_impact.png
-│   ├── shap_global.png
-│   └── shap_local.png
-│
-├── neuro_decline_model.pkl         # Trained XGBoost model
-├── requirements.txt
-└── README.md
+---
+
+## Key Findings
+
+**1. Label Construction from Scratch**
+MIMIC-IV has no brain death column. We combined:
+- ICD-10 code G93.82 → 129 gold standard cases
+- Clinical proxy (GCS ≤ 8 + InvasiveVent + Died) → 1,013 cases
+
+**2. Data Leakage Detected and Fixed**
+`on_invasive_vent` was used to build the label AND as a feature — 
+classic circular logic. Removing it dropped AUC by only 0.018, 
+confirming genuine learned signal.
+
+**3. Class Imbalance as a Design Problem**
+Predicting perfect organ donors (362 cases) gave recall near zero. 
+Reframing to neurological decline only (1,142 cases) fixed the imbalance 
+at the problem definition level, not the math level.
+
+**4. SHAP Explainability**
+Global and local SHAP values confirm the model learned clinically 
+correct patterns — low GCS drives predictions, stable MAP reduces them.
+
+---
+
+## Model
+
+- **Algorithm:** XGBoost
+- **scale_pos_weight:** 8.94 (handles 1:9 class imbalance)
+- **Threshold:** 0.3 (recall prioritized for clinical alert system)
+- **Features:** 15 clinical features across neurological, 
+  hemodynamic, organ, and composite categories
+
+---
+
+## Limitations
+
+- Proxy labels carry uncertainty — algorithmic ≠ ground truth
+- Single center data (BIDMC only)
+- Static features — no time-series trajectory modeling
+- Missing indicator not implemented
+- No external validation dataset
+
+---
+
+## Future Work
+
+- LSTM/Transformer for time-series trajectory modeling
+- Missing indicator features for lab values
+- External validation on eICU or AmsterdamUMCdb
+- Prospective clinical evaluation with transplant coordinators
+
+---
+
+## Requirements
+pip install -r requirements.txt
+
+xgboost
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+shap
+joblib
+
+---
+
+## Authors
+
+**Ammar Jamil**
+B.Tech CSB | IIIT Delhi | 2024065
+ammar24065@iiitd.ac.in
+
+---
+
+## Acknowledgements
+
+- Dr. Samrath (ICU Physician, Dubai Hospital) — clinical motivation
+- Prof. Tavpritesh Sethi — FBI course guidance
+- PhysioNet / MIMIC-IV team — data access
+- IIIT Delhi
+
+---
+
+## Citation
+
+If you use this work:
