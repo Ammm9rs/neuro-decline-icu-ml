@@ -45,6 +45,26 @@ This project is a direct response to that clinical problem.
 ---
 
 ## Project Structure
----
-
-## Project Structure
+neuro-decline-icu-ml/
+│
+├── sql/
+│   ├── label_construction.sql      # ICD + proxy + control cohort
+│   └── feature_extraction.sql      # 15 clinical features via BigQuery
+│
+├── notebooks/
+│   └── FBI_final_model.ipynb       # Full pipeline: clean → train → evaluate
+│
+├── outputs/
+│   ├── plot0_leakage_comparison.png
+│   ├── plot1_feature_importance.png
+│   ├── plot2_pr_curve.png
+│   ├── plot3_confusion_matrix.png
+│   ├── cohort_visualization.png
+│   ├── threshold_selection.png
+│   ├── clinical_impact.png
+│   ├── shap_global.png
+│   └── shap_local.png
+│
+├── neuro_decline_model.pkl         # Trained XGBoost model
+├── requirements.txt
+└── README.md
